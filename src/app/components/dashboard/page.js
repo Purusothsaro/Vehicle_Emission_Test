@@ -8,27 +8,37 @@ const dashboard = () => {
   const [vehicleDetailsedit, setVehicleDetailsedit] = useState(false);
 
   const [userDetails, setUserDetails] = useState({
-    userId: "",
-    phoneNo: "",
-    email: "",
-    date: "",
-    address: "",
-    userTageSource: "",
-    noOfVehicles: "",
+    userId: "-",
+    phoneNo: "-",
+    email: "-",
+    date: "-",
+    address: "-",
+    userTageSource: "-",
+    noOfVehicles: "-",
   });
 
   const [vehicleDetails, setVehicleDetails] = useState({
-    vehicleId: "",
-    vehicleName: "",
-    ownerName: "",
-    makeAndModel: "",
-    yearOfMfd: "",
-    licencePlateNo: "",
-    engineNo: "",
-    vehicleType: "",
-    cityOfRegistration: "",
-    optionToScheduleEmissionTest: "",
+    vehicleId: "-",
+    vehicleName: "-",
+    ownerName: "-",
+    makeAndModel: "-",
+    yearOfMfd: "-",
+    licencePlateNo: "-",
+    engineNo: "-",
+    vehicleType: "-",
+    cityOfRegistration: "-",
+    optionToScheduleEmissionTest: "-",
   });
+
+  const [dashBoard, setDashBoard] = useState({
+    lastTestDate: "-",
+    co2Emission: "-",
+    fuelConsumed: "-",
+    engineTemp: "-",
+  });
+
+  const [testResult, setTestResult] = useState([]);
+  const [testResultFilter, setTestResultFilter] = useState("");
 
   useEffect(() => {
     setUserDetails({
@@ -52,6 +62,35 @@ const dashboard = () => {
       cityOfRegistration: "Namakkal",
       optionToScheduleEmissionTest: "Yes",
     });
+    setDashBoard({
+      lastTestDate: "01 Jan 2024",
+      co2Emission: "0.8",
+      fuelConsumed: "5.6",
+      engineTemp: "90",
+    });
+    setTestResult([
+      {
+        testDate: "01 Jan 2022",
+        totalCO2Emission: "0.8",
+        totalFuelConsumed: "5.6/l",
+        engineTemperature: "90°C",
+        testResult: "Pass",
+      },
+      {
+        testDate: "01 Jan 2023",
+        totalCO2Emission: "1.8",
+        totalFuelConsumed: "5.6/l",
+        engineTemperature: "90°C",
+        testResult: "Pass",
+      },
+      {
+        testDate: "01 Jan 2024",
+        totalCO2Emission: "2.6",
+        totalFuelConsumed: "5.6/l",
+        engineTemperature: "90°C",
+        testResult: "Fail",
+      },
+    ]);
   }, []);
 
   const userDetailsOnChange = (e) => {
@@ -75,6 +114,23 @@ const dashboard = () => {
     editDetails(e);
   };
 
+  const testResultSearch = (e) => {
+    setTestResultFilter(e.target.value);
+  };
+
+  const testResultData = () => {
+    if (!testResultFilter) return testResult;
+    const lowerCaseFilter = testResultFilter.trim().toLowerCase();
+    return testResult.filter(
+      (data) =>
+        data.testDate.toLowerCase().includes(lowerCaseFilter) ||
+        data.totalCO2Emission.toLowerCase().includes(lowerCaseFilter) ||
+        data.totalFuelConsumed.toLowerCase().includes(lowerCaseFilter) ||
+        data.engineTemperature.toLowerCase().includes(lowerCaseFilter) ||
+        data.testResult.toLowerCase().includes(lowerCaseFilter)
+    );
+  };
+
   return (
     <section className="container my-4">
       <div className="d-flex justify-content-between mb-2">
@@ -84,14 +140,17 @@ const dashboard = () => {
         </div>
       </div>
 
-      <div className="row g-4 mb-4">
+      <div className="row mb-4">
         <div className="col-md-3">
           <div className="card p-3  shadow-sm">
             <div className="d-flex justify-content-between">
               <h5>Last Test Date</h5>
               <i className="bi bi-calendar fs-5"></i>
             </div>
-            <span className="fs-3 fw-bold text-primary">01 Jan 2022</span>
+            <span className="fs-3 fw-bold text-primary">
+              {" "}
+              {dashBoard.lastTestDate}
+            </span>
           </div>
         </div>
         <div className="col-md-3">
@@ -100,7 +159,9 @@ const dashboard = () => {
               <h5>Total CO2 Emission</h5>
               <i className="bi bi-fuel-pump fs-5"></i>
             </div>
-            <span className="fs-3 fw-bold text-primary">0.8</span>
+            <span className="fs-3 fw-bold text-primary">
+              {dashBoard.co2Emission}
+            </span>
           </div>
         </div>
         <div className="col-md-3">
@@ -110,7 +171,7 @@ const dashboard = () => {
               <i className="bi bi-fuel-pump fs-5"></i>
             </div>
             <span className="fs-3 fw-bold text-primary">
-              5.6
+              {dashBoard.fuelConsumed}
               <span className="fs-6 fw-bold">/L</span>
             </span>
           </div>
@@ -122,7 +183,7 @@ const dashboard = () => {
               <i className="bi bi-thermometer-half fs-5"></i>
             </div>
             <span className="fs-3 fw-bold text-primary">
-              90
+              {dashBoard.engineTemp}
               <span className="fs-6 fw-bold">°C</span>
             </span>
           </div>
@@ -343,6 +404,7 @@ const dashboard = () => {
                   type="text"
                   className="form-control"
                   placeholder="Search..."
+                  onChange={testResultSearch}
                   aria-label="Username"
                   aria-describedby="basic-addon1"
                 />
@@ -366,42 +428,43 @@ const dashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>01 Jan 2022</td>
-                    <td>0.8</td>
-                    <td>5.6/l</td>
-                    <td>90°C</td>
-                    <td>
-                      <span className="badge text-bg-success">Pass</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>01 Jan 2023</td>
-                    <td>0.8</td>
-                    <td>5.6/l</td>
-                    <td>90°C</td>
-                    <td>
-                      <span className="badge text-bg-success">Pass</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td>01 Jan 2024</td>
-                    <td>2.6</td>
-                    <td>5.6/l</td>
-                    <td>90°C</td>
-                    <td>
-                      <span className="badge text-bg-danger">Fail</span>
-                    </td>
-                  </tr>
+                  {testResultData().length > 0 ? (
+                    testResultData().map((data, index) => {
+                      return (
+                        <tr key={index}>
+                          <th scope="row">{index + 1}</th>
+                          <td>{data.testDate}</td>
+                          <td>{data.totalCO2Emission}</td>
+                          <td>{data.totalFuelConsumed}</td>
+                          <td>{data.engineTemperature}</td>
+                          <td>
+                            <span
+                              className={`badge text-bg-${
+                                data.testResult.toLowerCase() == "pass"
+                                  ? "success"
+                                  : "danger"
+                              }`}
+                            >
+                              {data.testResult}
+                            </span>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  ) : (
+                    <tr>
+                      <td colSpan={6} className="text-center">
+                        No Data Found
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>
           </div>
         </div>
       </div>
+
       <div className="row mb-4">
         <div className="col-md-12">
           <div className="card p-3 shadow-sm">
@@ -473,26 +536,5 @@ const dashboard = () => {
     </section>
   );
 };
-
-<style jsx>{`
-  .card {
-    border: none;
-    box- shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
-  }
-  .card:hover {
-    transform: translateY(-10px);
-  }
-  .accordion-button {
-    background-color: #e0f7fa;
-  }
-  .accordion-button:not(.collapsed) {
-    color: #009688;
-    background-color: #b2dfdb;
-  }
-  .accordion-item {
-    border: none;
-  }
-`}</style>;
 
 export default dashboard;
