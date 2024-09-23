@@ -3,7 +3,7 @@ import Link from "next/link";
 import "./globals.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import Alert from "./components/alert/page";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 const RootLayout = ({ children }) => {
   return (
@@ -18,7 +18,7 @@ const RootLayout = ({ children }) => {
               BrandLogo
             </Link>
             <button
-              className="navbar-toggler"
+              className="navbar-toggler collapsed"
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#navbarNav"
