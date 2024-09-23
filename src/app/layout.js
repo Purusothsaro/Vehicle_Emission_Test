@@ -3,7 +3,11 @@ import Link from "next/link";
 import "./globals.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import { useEffect } from "react";
+
+useEffect(() => {
+  require("bootstrap/dist/js/bootstrap.bundle.min.js");
+}, []);
 
 const RootLayout = ({ children }) => {
   return (
