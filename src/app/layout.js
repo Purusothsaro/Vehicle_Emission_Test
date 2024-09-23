@@ -5,11 +5,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useEffect } from "react";
 
-useEffect(() => {
-  require("bootstrap/dist/js/bootstrap.bundle.min.js");
-}, []);
-
 const RootLayout = ({ children }) => {
+  useEffect(() => {
+    require("bootstrap/dist/js/bootstrap.bundle.min.js");
+  }, []);
   return (
     <html lang="en">
       <head>
