@@ -114,9 +114,19 @@ const dashboard = () => {
     editDetails(e);
   };
 
-  const testResultSearch = (e) => {
-    setTestResultFilter(e.target.value);
+  const debounce = (mainFunction, delay) => {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        mainFunction(...args);
+      }, delay);
+    };
   };
+
+  const testResultSearch = debounce((e) => {
+    setTestResultFilter(e.target.value);
+  }, 1000);
 
   const testResultData = () => {
     if (!testResultFilter) return testResult;
